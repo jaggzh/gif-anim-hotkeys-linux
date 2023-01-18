@@ -6,7 +6,15 @@ fi
 
 mkdir -p "$ga_dir_base"
 mkdir -p "$ga_dir_frames"
-rm "$ga_dir_frames"/*."$ga_frame_ext"
+
+# Attempt to ensure some security by changing to the frames cache dir
+# and removing the files with the image extension from there.
+# ...instead of the earlier version that did:
+#      rm "$ga_dir_frames"/*."$ga_frame_ext"
+# We do it in a subshell so we don't change directories here,
+# not that # it matters much, since nothing else is done
+# that's dependent on the current dir.
+(cd "$ga_dir_frames" && rm *."$ga_frame_ext")
 
 printf '%s' "$ga_hotkey_comments"
 co=$(slop)
