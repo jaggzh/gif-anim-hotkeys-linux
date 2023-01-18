@@ -45,6 +45,7 @@ $ your-favorite-image-viewer ~/.cache/gif-anim-capture-area/gifanim-output.gif
 
 ## Limitations and Known Issues
 
+* I didn't test the installation steps above. :}
 * FPS is hard-coded in the settings file (currently 2 fps at the time of this writing)
 * The delay is the same between the end and loop to start
 * The area cannot be changed during a session (you must start a new session with gif-anim-select-area)
