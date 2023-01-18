@@ -1,18 +1,14 @@
 #!/bin/bash
-. gif-anim-settings
-if [[ -z "$ga_dir_frames" ]]; then
-	echo "FATAL ERROR: \$ga_dir_frames does not seem to be set!" >&2
+if ! . gif-anim-settings; then
+	echo 'Error importing gif-anim-settings' >&2
 	exit 1
 fi
+
 mkdir -p "$ga_dir_base"
 mkdir -p "$ga_dir_frames"
 rm "$ga_dir_frames"/*."$ga_frame_ext"
 
-cat <<'EOT'
-	After border selection, hit:
-	Win-F10 to capture an area
-	Win-F11 to finish
-EOT
+printf '%s' "$ga_hotkey_comments"
 co=$(slop)
 # co=285x184+289+669   # Test
 echo "Coordinates chosen: $co"

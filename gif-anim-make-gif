@@ -1,10 +1,8 @@
 #!/bin/bash
-. gif-anim-settings
-
-cd "$ga_dir_frames" || {
-	echo "Error! Couldn't access (chdir) to frames cache dir: $ga_dir_frames";
-	exit;
-}
+if ! . gif-anim-settings; then
+	echo 'Error importing gif-anim-settings' >&2
+	exit 1
+fi
 
 echo "Input frames ($ga_dir_frames):"
 ls -gGl *".$ga_frame_ext" | head -5 | sed -e 's/^/ /'

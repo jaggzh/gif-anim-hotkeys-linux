@@ -1,9 +1,9 @@
 #!/bin/bash
-. gif-anim-settings
-if [[ -z "${ga_dir_base+is_def}" ]]; then
-	echo 'Error: gif-anim-settings was not sourced correctly!' >&2
+if ! . gif-anim-settings; then
+	echo 'Error importing gif-anim-settings' >&2
 	exit 1
 fi
+
 # Make dir again since user might have removed frames dir
 # (Like, they selected a position with gif-anim-select-area,
 #  which creates the dir and stores the coordinates, but

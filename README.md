@@ -23,8 +23,8 @@ Make gif animations, snapping frames with hotkeys
 	1. Bind rectangle-selection command: gif-anim-select-area
 	1. Bind add-a-frame command: gif-anim-cap-frame
 	1. (Optional but convenient) Bind gif-anim-make-gif
-1. Optional
-	1. Modify gif-anim-settings to change the framerate (default is 2 fps)
+1. (Optional, probably) Modify gif-anim-settings to change the hotkey comments (`ga_hotkey_comments=...`). These comments are displayed by the `gif-anim-select-area` script, and will be seen if you run that script on commandline, but aren't otherwise used.
+1. (Optional) Modify gif-anim-settings to change the framerate (default is 2 fps)
 
 ## Testing
 
