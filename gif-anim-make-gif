@@ -1,0 +1,35 @@
+#!/bin/bash
+. gif-anim-settings
+
+cd "$ga_dir_frames" || {
+	echo "Error! Couldn't access (chdir) to frames cache dir: $ga_dir_frames";
+	exit;
+}
+
+echo "Input frames ($ga_dir_frames):"
+ls -gGl *".$ga_frame_ext" | head -5 | sed -e 's/^/ /'
+echo ' ...'
+
+#convert -delay 20 -loop 0 *.jpg myimage.gif
+# -framerate is input assumption (like, 60 fps, and output 60 fps)
+# -r results in dividing input fps SKIPPING IMAGES
+#    -framerate 60 -r 15 means:  final_fps = 60/15 = 4 (every 4 images)
+
+  # -r 1 \
+  # -vf scale=512:-1 \
+ffmpeg \
+  -y \
+  -loglevel warning \
+  -framerate "$ga_fps" \
+  -r 1 \
+  -pattern_type glob \
+  -i '*.png' \
+  "$ga_fn_out_raw" \
+;
+
+if [[ ! -f "$ga_fn_out_raw" ]]; then
+	echo "Error creating $ga_fn_out_raw" >&2
+	exit 1
+else
+	echo "Created $ga_fn_out_raw"
+fi

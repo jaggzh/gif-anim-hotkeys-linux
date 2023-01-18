@@ -1,0 +1,7 @@
+#!/bin/bash
+ga_dir_base=~/.cache/gif-anim-capture-area
+ga_dir_frames="$ga_dir_base/frames"
+ga_frame_ext=png
+ga_fn_coords="$ga_dir_base/coords.txt"
+ga_fn_out_raw="$ga_dir_base/gifanim-output.gif"
+ga_fps=2

@@ -1,0 +1,45 @@
+#!/bin/bash
+. gif-anim-settings
+if [[ -z "${ga_dir_base+is_def}" ]]; then
+	echo 'Error: gif-anim-settings was not sourced correctly!' >&2
+	exit 1
+fi
+# Make dir again since user might have removed frames dir
+# (Like, they selected a position with gif-anim-select-area,
+#  which creates the dir and stores the coordinates, but
+#  then maybe the user removes the frames/ folder
+#  and begins capturing frames.  So we have to ensure the
+#  frames/ folder exists.)
+mkdir -p "$ga_dir_frames"
+
+# Get prior frame (get filename; strip extension)
+idx=$(cd "$ga_dir_frames" && ls *.$ga_frame_ext | tail -1 | sed -e 's/\..*$//' 2>/dev/null)
+echo "IDX: $idx"
+if [[ -n "$idx" ]]; then
+	idx=${idx%.*}
+	idx=$((idx+1))
+else
+	idx=0
+fi
+# New frame filename:
+fn_frame=$(printf "$ga_dir_frames/%03d.$ga_frame_ext" "$idx")
+echo " Frame file: $fn_frame"
+
+coords=$(<$ga_fn_coords)
+echo "Coordinates: $coords"
+# Coords are x11 WxH+x+y
+# scrot wants x,y,w,h
+w=${coords%x*}
+h=${coords#*x}; h=${h%%+*}
+x=${coords#*+}; x=${x%+*}
+y=${coords##*+}
+echo "scrot coords (x,y,w,h): $x,$y,$w,$h"
+scrot_co="$x,$y,$w,$h"
+
+echo scrot -k -a "$scrot_co" "$fn_frame"
+scrot -k -a "$scrot_co" "$fn_frame"
+if [[ ! -f "$fn_frame" ]]; then
+	echo "We tried to create frame but somehow couldn't: $fn_frame" >&2
+else
+	echo "Frame captured: $fn_frame"
+fi
