@@ -6,6 +6,7 @@ ga_fn_coords="$ga_dir_base/coords.txt"
 ga_fn_out_raw="$ga_dir_base/gifanim-output.gif"
 ga_fps=2
 ga_hotkey_comments="
+(Edit gif-anim-settings for your own shortcut/key-bindings):
   After border selection (Win-F6), hit:
   Win-F7 to capture a frame
   Win-F8 to create a gif

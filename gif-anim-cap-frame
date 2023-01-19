@@ -1,8 +1,12 @@
 #!/bin/bash
-if ! . gif-anim-settings; then
-	echo 'Error importing gif-anim-settings' >&2
-	exit 1
-fi
+which gif-anim-settings >/dev/null || {
+	echo 'gif-anim-settings needs to be in your path (or modify the scripts to point directly to it)' >&2;
+	exit 1;
+}
+. gif-anim-settings || {
+	echo 'Error running gif-anim-settings to get settings' >&2;
+	exit 1;
+}
 
 # Make dir again since user might have removed frames dir
 # (Like, they selected a position with gif-anim-select-area,

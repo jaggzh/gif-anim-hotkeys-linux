@@ -1,8 +1,12 @@
 #!/bin/bash
-if ! . gif-anim-settings; then
-	echo 'Error importing gif-anim-settings' >&2
-	exit 1
-fi
+which gif-anim-settings >/dev/null || {
+	echo 'gif-anim-settings needs to be in your path (or modify the scripts to point directly to it)' >&2;
+	exit 1;
+}
+. gif-anim-settings || {
+	echo 'Error running gif-anim-settings to get settings' >&2;
+	exit 1;
+}
 
 mkdir -p "$ga_dir_base"
 mkdir -p "$ga_dir_frames"
@@ -14,7 +18,9 @@ mkdir -p "$ga_dir_frames"
 # We do it in a subshell so we don't change directories here,
 # not that # it matters much, since nothing else is done
 # that's dependent on the current dir.
-(cd "$ga_dir_frames" && rm *."$ga_frame_ext")
+echo
+echo "Wiping prior session frames: $ga_dir_frames/*.$ga_frame_ext"
+(cd "$ga_dir_frames" && rm *."$ga_frame_ext" 2>/dev/null)
 
 printf '%s' "$ga_hotkey_comments"
 co=$(slop)
