@@ -14,10 +14,10 @@ Make gif animations, snapping frames with hotkeys
 * gif-anim-make-gif: Final script which uses ffmpeg to output the frames
 
 ## Installation:
-1. Clone this repository
-	1. cd ~/bin/ && git submodule add https://github.com/jaggzh/gif-anim-hotkeys-linux
-	1. Or clone it somewhere else like normal: `git clone https://github.com/jaggzh/gif-anim-hotkeys-linux`
-1. Copy default settings: `cp gif-anim-settings.example gif-anim-settings`
+1. Clone this repository:
+	* `git clone https://github.com/jaggzh/gif-anim-hotkeys-linux`
+1. Copy default settings:
+	* `cp gif-anim-settings.example gif-anim-settings`
 1. Symlink all scripts to a folder in your path (this is required currently, at minimum, because we source the settings script, like `. gif-anim-settings`.  You can modify the scripts to point directly to it if you want though.
 	1. srcdir=~/bin/gif-anim-hotkeys-linux  **Use your local cloned folder here**
 	1. cd "$srcdir" && for i in gif-\*; do (cd ~/bin && ln -s "$srcdir/$i" "$i"; done
