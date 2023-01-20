@@ -22,7 +22,11 @@ echo "Wiping prior session frames: $ga_dir_frames/*.$ga_frame_ext"
 (cd "$ga_dir_frames" && rm *."$ga_frame_ext" 2>/dev/null)
 
 printf '%s' "$ga_hotkey_comments"
-co=$(slop)
+if [ -z "$WAYLAND_DISPLAY" ]; then
+	co="$(slop)"
+else
+	co="$(slurp)"
+fi
 # co=285x184+289+669   # Test
 echo "Coordinates chosen: $co"
 echo "$co" > "$ga_fn_coords"

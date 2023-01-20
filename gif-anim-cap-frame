@@ -30,17 +30,22 @@ echo " Frame file: $fn_frame"
 
 coords=$(<$ga_fn_coords)
 echo "Coordinates: $coords"
-# Coords are x11 WxH+x+y
-# scrot wants x,y,w,h
-w=${coords%x*}
-h=${coords#*x}; h=${h%%+*}
-x=${coords#*+}; x=${x%+*}
-y=${coords##*+}
-echo "scrot coords (x,y,w,h): $x,$y,$w,$h"
-scrot_co="$x,$y,$w,$h"
+if [ -z "$WAYLAND_DISPLAY" ]; then
+	# Coords are x11 WxH+x+y
+	# scrot wants x,y,w,h
+	w=${coords%x*}
+	h=${coords#*x}; h=${h%%+*}
+	x=${coords#*+}; x=${x%+*}
+	y=${coords##*+}
+	echo "scrot coords (x,y,w,h): $x,$y,$w,$h"
+	scrot_co="$x,$y,$w,$h"
 
-echo scrot -k -a "$scrot_co" "$fn_frame"
-scrot -k -a "$scrot_co" "$fn_frame"
+	echo scrot -k -a "$scrot_co" "$fn_frame"
+	scrot -k -a "$scrot_co" "$fn_frame"
+else
+	grim -g "$coords" "$fn_frame"
+fi
+
 if [[ ! -f "$fn_frame" ]]; then
 	echo "We tried to create frame but somehow couldn't: $fn_frame" >&2
 else

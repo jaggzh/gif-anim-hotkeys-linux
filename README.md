@@ -9,7 +9,8 @@ Make gif animations, snapping frames with hotkeys
 	* Ensures creation of folders,
 	* wipes prior session frames,
 	* Uses `slop` to get mouse-drawn area of screen,
-	* Stores slop's coordinates in coords.txt file in cache dir (see -settings)
+		* Uses `slurp` in Wayland
+	* Stores coordinates in coords.txt file in cache dir (see -settings)
 * gif-anim-cap-frame: Script to capture a frame and add it to the frames/ folder
 * gif-anim-make-gif: Final script which uses ffmpeg to output the frames
 
@@ -43,9 +44,14 @@ $ your-favorite-image-viewer ~/.cache/gif-anim-capture-area/gifanim-output.gif
 
 ## Dependencies
 
-* slop - to get the rectangle screen area with the user's mouse selection
-* scrot - to grab the frames (of the chosen area)
-* ffmpeg - to make the final gif
+* X11
+	* slop - to get the rectangle screen area with the user's mouse selection
+	* scrot - to grab the frames (of the chosen area)
+	* ffmpeg - to make the final gif
+* Wayland
+	* slurp - to get the rectangle screen area with the user's mouse selection
+	* grim - to grab the frames (of the chosen area)
+	* ffmpeg - to make the final gif
 
 ## Limitations and Known Issues
 
