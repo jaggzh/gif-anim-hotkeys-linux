@@ -18,15 +18,17 @@ Make gif animations, snapping frames with hotkeys
 	* `git clone https://github.com/jaggzh/gif-anim-hotkeys-linux`
 1. Copy default settings:
 	* `cp gif-anim-settings.example gif-anim-settings`
-1. Symlink all scripts to a folder in your path (this is required currently, at minimum, because we source the settings script, like `. gif-anim-settings`.  You can modify the scripts to point directly to it if you want though.
-	1. srcdir=~/bin/gif-anim-hotkeys-linux  **Use your local cloned folder here**
-	1. cd "$srcdir" && for i in gif-\*; do (cd ~/bin && ln -s "$srcdir/$i" "$i"; done
+1. (Optional) The scripts can run in place (assign hotkeys to full path). They auto-detect where they are running since they need to find the -settings script. HOWEVER, if you want, you can symlink all scripts to a folder in your path. This makes it easier to run them commandline from anywhere:
+	1. srcdir=~/path-to-scripts/gif-anim-hotkeys-linux
+	1. my\_bin\_path=~/bin/
+	1. cd "$srcdir" && for i in gif-\*; do (cd "$my\_bin\_path" && ln -s "$srcdir/$i" "$i"; done
 1. Assign hotkeys
 	1. Bind rectangle-selection command: gif-anim-select-area
 	1. Bind add-a-frame command: gif-anim-cap-frame
 	1. (Optional but convenient) Bind gif-anim-make-gif
-1. (Optional, probably) Modify gif-anim-settings to change the hotkey comments (`ga_hotkey_comments=...`). These comments are displayed by the `gif-anim-select-area` script, and will be seen if you run that script on commandline, but aren't otherwise used.
-1. (Optional) Modify gif-anim-settings to change the framerate (default is 2 fps)
+1. (Optional) Settings changes:
+	* Modify gif-anim-settings to change the hotkey comments help which is output when you run `gif-anim-select-area` (and presently displays my own personal hotkey assignments). See `ga_hotkey_comments=...`.  This is probably only seen if you run gif-anim-select-area from commandline.
+	* Modify gif-anim-settings to change the framerate (default is 2 fps)
 
 ## Testing
 

@@ -1,10 +1,9 @@
 #!/bin/bash
-which gif-anim-settings >/dev/null || {
-	echo 'gif-anim-settings needs to be in your path (or modify the scripts to point directly to it)' >&2;
-	exit 1;
-}
-. gif-anim-settings || {
-	echo 'Error running gif-anim-settings to get settings' >&2;
+SCRIPT=$(readlink -f "$0")
+SCRIPTPATH=$(dirname "$SCRIPT")
+SETTINGS="$SCRIPTPATH/gif-anim-settings"
+. "$SETTINGS" || {
+	echo "Error running '$SETTINGS' to get settings" >&2;
 	exit 1;
 }
 
