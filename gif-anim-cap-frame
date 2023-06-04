@@ -7,6 +7,44 @@ SETTINGS="$SCRIPTPATH/gif-anim-settings"
 	exit 1;
 }
 
+full_frame_path () {
+	local idx="$1"
+	printf "$ga_dir_frames/%03d.$ga_frame_ext" "$idx"
+}
+
+lock_obtain() {
+	while [ -e "$ga_framecap_lock_fn" ]; do
+		# If the lockfile exists, print warning
+		echo "Lockfile $ga_framecap_lock_fn exists" >&2
+		# Read the PID
+		lock_pid=$(cat "$ga_framecap_lock_fn")
+		# Check if the PID in the lockfile is still running
+		if ps -p $lock_pid > /dev/null; then
+			echo "Waiting for lock to be released by PID $lock_pid..." >&2
+			# Count number of HALF SECONDS that have passed
+			half_seconds_passed=0
+			# Wait for the lock to be released, checking every 0.5 seconds
+			while [ -e "$ga_framecap_lock_fn" ] && ps -p $lock_pid > /dev/null; do
+				sleep 0.5
+				((half_seconds_passed++))
+				# If the lock is not released within $ga_waitlock_secs, kill the PID
+				if [ $half_seconds_passed -ge $((2*$ga_waitlock_secs)) ]; then
+					echo "Lock not released, killing PID $lock_pid" >&2
+					kill $lock_pid || true
+					break
+				fi
+			done
+		else
+			echo "Process $lock_pid not running, removing lock" >&2
+			rm -f "$ga_framecap_lock_fn"
+		fi
+	done
+
+	# Once the lockfile is gone or removed, create a new one with the current PID and set a trap to remove it when the script exits.
+	echo $$ > "$ga_framecap_lock_fn"
+	trap "rm -f $ga_framecap_lock_fn" EXIT
+}
+
 # Make dir again since user might have removed frames dir
 # (Like, they selected a position with gif-anim-select-area,
 #  which creates the dir and stores the coordinates, but
@@ -20,12 +58,18 @@ idx=$(cd "$ga_dir_frames" && ls *.$ga_frame_ext | tail -1 | sed -e 's/\..*$//' 2
 echo "IDX: $idx"
 if [[ -n "$idx" ]]; then
 	idx=${idx%.*}
-	idx=$((idx+1))
+	while true; do
+		idx=$((idx+1))
+		tmppath=$(full_frame_path "$idx")
+		if [[ ! -f $tmppath ]]; then # Testing if somehow the last file from ls | tail exists
+			break
+		fi
+	done
 else
 	idx=0
 fi
 # New frame filename:
-fn_frame=$(printf "$ga_dir_frames/%03d.$ga_frame_ext" "$idx")
+fn_frame=$(full_frame_path "$idx")
 echo " Frame file: $fn_frame"
 
 coords=$(<$ga_fn_coords)
@@ -40,9 +84,14 @@ if [ -z "$WAYLAND_DISPLAY" ]; then
 	echo "scrot coords (x,y,w,h): $x,$y,$w,$h"
 	scrot_co="$x,$y,$w,$h"
 
-	echo scrot -k -a "$scrot_co" "$fn_frame"
+	echo "Sending off our child to go capture some pixels to bring back home"
+	echo " to the family..."
+	echo " Running: scrot -k -a '$scrot_co' '$fn_frame'"
 	scrot -k -a "$scrot_co" "$fn_frame"
 else
+	echo "Sending off our child to go capture some pixels to bring back home"
+	echo " to the family..."
+	echo "Running: grim -g '$coords' '$fn_frame'"
 	grim -g "$coords" "$fn_frame"
 fi
 

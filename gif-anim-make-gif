@@ -12,7 +12,10 @@ cd "$ga_dir_frames" || {
 	echo "Error changing to frames dir: $ga_dir_frames" >&2;
 	exit 1;
 }
-ls -gGl *".$ga_frame_ext" | head -5 | sed -e 's/^/ /'
+{ ls -gGl ???".$ga_frame_ext";
+  ls -gGl ????*".$ga_frame_ext"
+} 2>/dev/null |
+	head -5 | sed -e 's/^/ /'
 echo ' ...'
 
 #convert -delay 20 -loop 0 *.jpg myimage.gif

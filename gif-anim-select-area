@@ -20,6 +20,8 @@ mkdir -p "$ga_dir_frames"
 echo
 echo "Wiping prior session frames: $ga_dir_frames/*.$ga_frame_ext"
 (cd "$ga_dir_frames" && rm *."$ga_frame_ext" 2>/dev/null)
+echo "Removing lockfile, if it's there: $ga_framecap_lock_fn"
+[[ -f $ga_framecap_lock_fn ]] && rm "$ga_framecap_lock_fn"
 
 printf '%s' "$ga_hotkey_comments"
 if [ -z "$WAYLAND_DISPLAY" ]; then
