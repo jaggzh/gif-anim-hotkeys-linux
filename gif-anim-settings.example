@@ -11,4 +11,5 @@ ga_hotkey_comments="
   Win-F7 to capture a frame
   Win-F8 to create a gif
 "
-
+ga_framecap_lock_fn="$ga_dir_base/framecap.lock"
+ga_waitlock_secs=10
